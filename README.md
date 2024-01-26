@@ -25,7 +25,6 @@ starts vertical down, ends horizontal left
 ```
 python3 dlines.py 2 9 2 6 8 6 8 9 5 9 5 13 2 13
 ```
-```
 starts vertical up, ends vertical down
 ```
 python3 dlines.py 10 10 10 13 7 13 7 10 4 10 4 7 7 7 7 4 13 4 13 1 16 1 16 12 13 12 13 9 11 9 11 2
