@@ -2,10 +2,16 @@ import sys
 import matplotlib.pyplot as plt
 
 DISTANCE = 0.5
+# vertical down, vertical up
 # python3 dlines.py 2 9 2 6 8 6 8 9 5 9 5 13
+# vertical down, vertical up
 # python3 dlines.py 5 13 5 9 8 9 8 6 2 6 2 9
+# vertical up, vertical down
 # python3 dlines.py 10 10 10 13 7 13 7 10 4 10 4 7 7 7 7 4 13 4 13 1 16 1 16 12 13 12 13 9 11 9 11 2
+# horizontal left, horizontal left
 # python3 dlines.py 10 13 7 13 7 10 4 10 4 7 7 7 7 4 13 4 13 1 16 1 16 12 13 12 13 9 11 9 11 2 10 2 
+# horizontal right, horizontal right
+# python3 dlines.py 9 11 10 11 10 13 7 13 7 10 4 10 4 7 7 7 7 4 13 4 13 1 16 1 16 12 13 12 13 9 11 9 11 6 18 6
 
 def draw_lines(ax, coordinates):
 
@@ -46,6 +52,9 @@ def draw_lines(ax, coordinates):
         red_x = red_x + DISTANCE
         blue_x = blue_x - DISTANCE
 
+    red_x, red_y, blue_x, blue_y = get_extreme_points2(coordinates, len(coordinates) - 1, is_horizontal_line)
+    print(" out red: ", red_x, red_y, " blue: ", blue_x, blue_y)
+    print(" out prev red: ", red_prev_x, red_prev_y, " prev blue: ", blue_prev_x, blue_prev_y)
     red_coordinates.append((red_x, red_y))
     blue_coordinates.append((blue_x, blue_y))
     
@@ -72,6 +81,27 @@ def get_extreme_points(coordinates, p, is_horizontal_line):
         else: # vertical up
             red_x = a_x - DISTANCE
             blue_x = a_x + DISTANCE
+    return red_x, red_y, blue_x, blue_y
+
+
+
+def get_extreme_points2(coordinates, p, is_horizontal_line):
+    red_x, red_y = blue_x, blue_y = a_x, a_y = coordinates[p]
+    b_x, b_y = coordinates[p - 1]
+    if is_horizontal_line:
+        if a_x > b_x: # left  
+            red_y = a_y + DISTANCE
+            blue_y = a_y - DISTANCE
+        else: # right
+            red_y = a_y - DISTANCE
+            blue_y = a_y + DISTANCE
+    else:
+        if a_y > b_y: # vertival down 
+            red_x = a_x - DISTANCE
+            blue_x = a_x + DISTANCE
+        else: # vertical up
+            red_x = a_x + DISTANCE
+            blue_x = a_x - DISTANCE
     return red_x, red_y, blue_x, blue_y
 
 
