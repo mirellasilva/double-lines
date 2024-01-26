@@ -2,8 +2,10 @@ import sys
 import matplotlib.pyplot as plt
 
 DISTANCE = 0.5
-# python3 lines2.py 5 13 5 9 8 9 8 6 2 6 2 9
-# python3 lines2.py 10 13 7 13 7 10 4 10 4 7 7 7 7 4 13 4 13 1 16 1 16 12 13 12 13 9 11 9 11 2
+# python3 dlines.py 2 9 2 6 8 6 8 9 5 9 5 13
+# python3 dlines.py 5 13 5 9 8 9 8 6 2 6 2 9
+# python3 dlines.py 10 10 10 13 7 13 7 10 4 10 4 7 7 7 7 4 13 4 13 1 16 1 16 12 13 12 13 9 11 9 11 2
+# python3 dlines.py 10 13 7 13 7 10 4 10 4 7 7 7 7 4 13 4 13 1 16 1 16 12 13 12 13 9 11 9 11 2 10 2 
 
 def draw_lines(ax, coordinates):
 
@@ -11,24 +13,13 @@ def draw_lines(ax, coordinates):
         return
 
     plot_coordinates(ax, coordinates, "yellow")
-
-    red_x, red_y = blue_x, blue_y = coordinates[0]
     is_horizontal_line = does_it_repeat_y(coordinates, 0)
 
-    # first point is different
-    if is_horizontal_line:
-        # red_x is done
-        red_y = red_y - DISTANCE
-        blue_y = blue_y + DISTANCE
-    else:
-        # red_y is done
-        red_x = red_x + DISTANCE
-        blue_x = blue_x - DISTANCE
+    red_prev_x, red_prev_y, blue_prev_x, blue_prev_y = get_extreme_points(coordinates, 0, is_horizontal_line)
 
-    red_coordinates = [(red_x, red_y)]
-    blue_coordinates = [(blue_x, blue_y)]
-    red_prev_x, red_prev_y = red_x, red_y
-    blue_prev_x, blue_prev_y = blue_x, blue_y
+    red_coordinates = [(red_prev_x, red_prev_y)]
+    blue_coordinates = [(blue_prev_x, blue_prev_y)]
+
     print(" prev red: ", red_prev_x, red_prev_y, " prev blue: ", blue_prev_x, blue_prev_y)
     for i in range(1, len(coordinates) - 1):
         red_next_x, red_next_y = get_next_red_point(red_prev_x, red_prev_y, coordinates, i, is_horizontal_line)
@@ -36,9 +27,7 @@ def draw_lines(ax, coordinates):
         
         red_coordinates.append((red_next_x, red_next_y))
         blue_coordinates.append((blue_next_x, blue_next_y))
-        #ax.plot([red_prev_x, red_prev_y], [red_next_x, red_next_y], color="red")
-        #ax.plot([blue_prev_x, blue_prev_y], [blue_next_x, blue_next_y], color="blue")
-
+        
         is_horizontal_line = not is_horizontal_line
         red_prev_x, red_prev_y = red_next_x, red_next_y
         blue_prev_x, blue_prev_y = blue_next_x, blue_next_y
@@ -64,6 +53,27 @@ def draw_lines(ax, coordinates):
     plot_coordinates(ax, blue_coordinates, "blue")
     #ax.plot([red_prev_x, red_prev_y], [last_x, last_y], color="red")
     #ax.plot([blue_prev_x, blue_prev_y], [last_x, last_y], color="blue") 
+
+
+def get_extreme_points(coordinates, p, is_horizontal_line):
+    red_x, red_y = blue_x, blue_y = a_x, a_y = coordinates[p]
+    b_x, b_y = coordinates[p + 1]
+    if is_horizontal_line:
+        if a_x > b_x: # left  
+            red_y = a_y - DISTANCE
+            blue_y = a_y + DISTANCE
+        else: # right
+            red_y = a_y + DISTANCE
+            blue_y = a_y - DISTANCE
+    else:
+        if a_y > b_y: # vertival down 
+            red_x = a_x + DISTANCE
+            blue_x = a_x - DISTANCE
+        else: # vertical up
+            red_x = a_x - DISTANCE
+            blue_x = a_x + DISTANCE
+    return red_x, red_y, blue_x, blue_y
+
 
 def get_next_red_point(prev_x, prev_y, coordinates, p, is_horizontal_line):
     x1, y1 = coordinates[p] # B
