@@ -12,7 +12,7 @@ This code was developed in the context of a challenge. Read more about it [here]
 
 ## How to Run
 
-### Test Script
+### Auto
 
 Run: 
 

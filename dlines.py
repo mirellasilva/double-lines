@@ -1,6 +1,7 @@
 import sys
 import matplotlib.pyplot as plt
 
+# How far away from initial points we want to draw the double lines
 DISTANCE = 0.5
 
 def draw_lines(ax, coordinates):
@@ -8,28 +9,28 @@ def draw_lines(ax, coordinates):
     if len(coordinates) < 3: 
         return
 
-    is_horizontal_line = does_it_repeat_y(coordinates, 0)
+    x1, y1 = coordinates[0]
+    x2, y2 = coordinates[1]
+    is_horizontal_line = (y1 == y2)
 
     red_x, red_y, blue_x, blue_y = get_extremities(coordinates, 0, 1, is_horizontal_line, True)
     red_coordinates = [(red_x, red_y)]
     blue_coordinates = [(blue_x, blue_y)]
 
     for i in range(1, len(coordinates) - 1):
-        red_x, red_y, blue_x, blue_y = get_next_points(red_x, red_y, blue_x, blue_y, coordinates, i, is_horizontal_line)
-        
+        red_x, red_y, blue_x, blue_y = get_next_points(red_x, red_y, blue_x, blue_y, coordinates, i, is_horizontal_line)        
         red_coordinates.append((red_x, red_y))
         blue_coordinates.append((blue_x, blue_y))
-        
         is_horizontal_line = not is_horizontal_line
 
     red_x, red_y, blue_x, blue_y = get_extremities(coordinates, len(coordinates) - 1, len(coordinates) - 2, is_horizontal_line, False)
-    
     red_coordinates.append((red_x, red_y))
     blue_coordinates.append((blue_x, blue_y))
     
     plot_coordinates(ax, coordinates, "yellow")
     plot_coordinates(ax, red_coordinates, "red")
     plot_coordinates(ax, blue_coordinates, "blue")
+
 
 def get_extremities(coordinates, a, b, is_horizontal_line, is_start):
     a_x, a_y = coordinates[a]
@@ -38,19 +39,18 @@ def get_extremities(coordinates, a, b, is_horizontal_line, is_start):
     if is_horizontal_line:
         if (a_x > b_x) == is_start:
             return a_x, a_y - DISTANCE, a_x, a_y + DISTANCE
-        else: # right
+        else:
             return a_x, a_y + DISTANCE, a_x, a_y - DISTANCE
     else:
         if (a_y > b_y) == is_start: 
             return a_x + DISTANCE, a_y, a_x - DISTANCE, a_y
-        else: # vertical up
+        else:
             return a_x - DISTANCE, a_y, a_x + DISTANCE, a_y
 
 
 def get_next_points(red_prev_x, red_prev_y, blue_prev_x, blue_prev_y, coordinates, p, is_horizontal_line):
     x1, y1 = coordinates[p]
     x2, y2 = coordinates[p + 1]
-
     if is_horizontal_line:
         if y1 < y2:
             return x1 - DISTANCE, red_prev_y, x1 + DISTANCE, blue_prev_y
