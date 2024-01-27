@@ -90,25 +90,20 @@ def get_ending_points(coordinates, p, is_horizontal_line):
 
 
 def get_next_points(red_prev_x, red_prev_y, blue_prev_x, blue_prev_y, coordinates, p, is_horizontal_line):
-    x1, y1 = coordinates[p] # B
-    x2, y2 = coordinates[p + 1] # C
-    red_next_x, red_next_y = red_prev_x, red_prev_y
-    blue_next_x, blue_next_y = blue_prev_x, blue_prev_y
+    x1, y1 = coordinates[p]
+    x2, y2 = coordinates[p + 1]
+
     if is_horizontal_line:
         if y1 < y2:
-            red_next_x = x1 - DISTANCE
-            blue_next_x = x1 + DISTANCE
+            return x1 - DISTANCE, red_prev_y, x1 + DISTANCE, blue_prev_y
         else: 
-            red_next_x = x1 + DISTANCE
-            blue_next_x = x1 - DISTANCE
+            return x1 + DISTANCE, red_prev_y, x1 - DISTANCE, blue_prev_y
     else: 
         if x1 < x2:
-            red_next_y = y1 + DISTANCE
-            blue_next_y = y1 - DISTANCE
+            return red_prev_x, y1 + DISTANCE, blue_prev_x, y1 - DISTANCE
         else: 
-            red_next_y = y1 - DISTANCE
-            blue_next_y = y1 + DISTANCE
-    return (red_next_x, red_next_y, blue_next_x, blue_next_y)
+            return red_prev_x, y1 - DISTANCE, blue_prev_x, y1 + DISTANCE
+
 
 def does_it_repeat_y(coordinates, p):
     x1, y1 = coordinates[p]
