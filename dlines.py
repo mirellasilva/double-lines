@@ -27,6 +27,7 @@ def draw_lines(ax, coordinates):
     red_coordinates.append((red_x, red_y))
     blue_coordinates.append((blue_x, blue_y))
     
+    # Yellow line is for reference points
     plot_coordinates(ax, coordinates, "yellow")
     plot_coordinates(ax, red_coordinates, "red")
     plot_coordinates(ax, blue_coordinates, "blue")
