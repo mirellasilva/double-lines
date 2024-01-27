@@ -11,12 +11,12 @@ def draw_lines(ax, coordinates):
     plot_coordinates(ax, coordinates, "yellow")
     is_horizontal_line = does_it_repeat_y(coordinates, 0)
 
-    red_prev_x, red_prev_y, blue_prev_x, blue_prev_y = get_starting_points(coordinates, 0, is_horizontal_line)
+    red_prev_x, red_prev_y, blue_prev_x, blue_prev_y = get_extremities(coordinates, 0, 1, is_horizontal_line, True)
 
     red_coordinates = [(red_prev_x, red_prev_y)]
     blue_coordinates = [(blue_prev_x, blue_prev_y)]
 
-    print(" prev red: ", red_prev_x, red_prev_y, " prev blue: ", blue_prev_x, blue_prev_y)
+    #print(" prev red: ", red_prev_x, red_prev_y, " prev blue: ", blue_prev_x, blue_prev_y)
     for i in range(1, len(coordinates) - 1):
         red_next_x, red_next_y, blue_next_x, blue_next_y = get_next_points(red_prev_x, red_prev_y, blue_prev_x, blue_prev_y, coordinates, i, is_horizontal_line)
         
@@ -28,20 +28,8 @@ def draw_lines(ax, coordinates):
         blue_prev_x, blue_prev_y = blue_next_x, blue_next_y
         #print(" prev red: ", red_prev_x, red_prev_y, " prev blue: ", blue_prev_x, blue_prev_y)
 
+    red_x, red_y, blue_x, blue_y = get_extremities(coordinates, len(coordinates) - 1, len(coordinates) - 2, is_horizontal_line, False)
     
-    red_x, red_y = blue_x, blue_y = coordinates[len(coordinates) - 1]
-
-    # last point is different
-    if is_horizontal_line:
-        # red_x is done
-        red_y = red_y - DISTANCE
-        blue_y = blue_y + DISTANCE
-    else:
-        # red_y is done
-        red_x = red_x + DISTANCE
-        blue_x = blue_x - DISTANCE
-
-    red_x, red_y, blue_x, blue_y = get_ending_points(coordinates, len(coordinates) - 1, is_horizontal_line)
     #print(" out red: ", red_x, red_y, " blue: ", blue_x, blue_y)
     #print(" out prev red: ", red_prev_x, red_prev_y, " prev blue: ", blue_prev_x, blue_prev_y)
     red_coordinates.append((red_x, red_y))
@@ -50,35 +38,20 @@ def draw_lines(ax, coordinates):
     plot_coordinates(ax, red_coordinates, "red")
     plot_coordinates(ax, blue_coordinates, "blue")
 
-def get_starting_points(coordinates, p, is_horizontal_line):
-    red_x, red_y = blue_x, blue_y = a_x, a_y = coordinates[p]
-    b_x, b_y = coordinates[p + 1]
-    if is_horizontal_line:
-        if a_x > b_x: # left  
-            red_y = a_y - DISTANCE
-            blue_y = a_y + DISTANCE
-            return a_x, a_y - DISTANCE, a_x, a_y + DISTANCE
-        else: # right
-            return a_x, a_y + DISTANCE, a_x, a_y - DISTANCE
-    else:
-        if a_y > b_y: # vertival down 
-            return a_x + DISTANCE, a_y, a_x - DISTANCE, a_y
-        else: # vertical up
-            return a_x - DISTANCE, a_y, a_x + DISTANCE, a_y
+def get_extremities(coordinates, a, b, is_horizontal_line, is_start):
+    a_x, a_y = coordinates[a]
+    b_x, b_y = coordinates[b]
 
-def get_ending_points(coordinates, p, is_horizontal_line):
-    a_x, a_y = coordinates[p]
-    b_x, b_y = coordinates[p - 1]
     if is_horizontal_line:
-        if a_x > b_x: # left  
-            return a_x, a_y + DISTANCE, a_x, a_y - DISTANCE
-        else: # right
+        if (a_x > b_x) == is_start:
             return a_x, a_y - DISTANCE, a_x, a_y + DISTANCE
+        else: # right
+            return a_x, a_y + DISTANCE, a_x, a_y - DISTANCE
     else:
-        if a_y > b_y: # vertival down 
-            return a_x - DISTANCE, a_y, a_x + DISTANCE, a_y
-        else: # vertical up
+        if (a_y > b_y) == is_start: 
             return a_x + DISTANCE, a_y, a_x - DISTANCE, a_y
+        else: # vertical up
+            return a_x - DISTANCE, a_y, a_x + DISTANCE, a_y
 
 
 def get_next_points(red_prev_x, red_prev_y, blue_prev_x, blue_prev_y, coordinates, p, is_horizontal_line):
