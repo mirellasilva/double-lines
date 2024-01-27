@@ -12,10 +12,19 @@ This code was developed in the context of a challenge. Read more about it [here]
 
 ## How to Run
 
+### Test Script
+
+Run: 
+
+```
+python3 run_tests.py
+```
+
+### Manually
 You can both use sys.argv to enter with the points, separated by space, such as `x1 y1 x2 y2 ... xn yn`, or follow instructions for io input.
 
-### Sample run:
 
+**Sample run:**
 
 starts vertical down, ends vertical up
 ```
