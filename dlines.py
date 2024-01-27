@@ -57,36 +57,28 @@ def get_starting_points(coordinates, p, is_horizontal_line):
         if a_x > b_x: # left  
             red_y = a_y - DISTANCE
             blue_y = a_y + DISTANCE
+            return a_x, a_y - DISTANCE, a_x, a_y + DISTANCE
         else: # right
-            red_y = a_y + DISTANCE
-            blue_y = a_y - DISTANCE
+            return a_x, a_y + DISTANCE, a_x, a_y - DISTANCE
     else:
         if a_y > b_y: # vertival down 
-            red_x = a_x + DISTANCE
-            blue_x = a_x - DISTANCE
+            return a_x + DISTANCE, a_y, a_x - DISTANCE, a_y
         else: # vertical up
-            red_x = a_x - DISTANCE
-            blue_x = a_x + DISTANCE
-    return red_x, red_y, blue_x, blue_y
+            return a_x - DISTANCE, a_y, a_x + DISTANCE, a_y
 
 def get_ending_points(coordinates, p, is_horizontal_line):
-    red_x, red_y = blue_x, blue_y = a_x, a_y = coordinates[p]
+    a_x, a_y = coordinates[p]
     b_x, b_y = coordinates[p - 1]
     if is_horizontal_line:
         if a_x > b_x: # left  
-            red_y = a_y + DISTANCE
-            blue_y = a_y - DISTANCE
+            return a_x, a_y + DISTANCE, a_x, a_y - DISTANCE
         else: # right
-            red_y = a_y - DISTANCE
-            blue_y = a_y + DISTANCE
+            return a_x, a_y - DISTANCE, a_x, a_y + DISTANCE
     else:
         if a_y > b_y: # vertival down 
-            red_x = a_x - DISTANCE
-            blue_x = a_x + DISTANCE
+            return a_x - DISTANCE, a_y, a_x + DISTANCE, a_y
         else: # vertical up
-            red_x = a_x + DISTANCE
-            blue_x = a_x - DISTANCE
-    return red_x, red_y, blue_x, blue_y
+            return a_x + DISTANCE, a_y, a_x - DISTANCE, a_y
 
 
 def get_next_points(red_prev_x, red_prev_y, blue_prev_x, blue_prev_y, coordinates, p, is_horizontal_line):
