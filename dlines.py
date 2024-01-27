@@ -138,10 +138,10 @@ else:
         x, y = map(float, input_str.split())
         coordinates.append((x, y))
 
-# Create a figure and axis
+
 fig, ax = plt.subplots()
 
-# Call the function to draw lines connecting all points
+# actual work
 draw_lines(ax, coordinates)
 
 # Set axis limits
@@ -157,7 +157,7 @@ ax.set_xlabel('X-axis')
 ax.set_ylabel('Y-axis')
 
 # Set plot title
-ax.set_title('Lines Connecting All Points')
+ax.set_title('Double Lines')
 
 # Display legend
 ax.legend()
